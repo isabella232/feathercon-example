@@ -1,0 +1,8 @@
+dependencies {
+    compile libraries.jersey_client
+    compile libraries.logging
+
+    testCompile libraries.test
+    testCompile "com.xoom.oss:feathercon:1.4.1"
+    testCompile 'com.google.code.gson:gson:2.2.2'
+}
