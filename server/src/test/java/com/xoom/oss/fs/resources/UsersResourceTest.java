@@ -85,6 +85,8 @@ public class UsersResourceTest {
 
         SSLContext ssl = SSLContext.getInstance("TLS");
         ssl.init(null, new TrustManager[]{x509TrustManager}, null);
+
+        // https://blogs.oracle.com/enterprisetechtips/entry/consuming_restful_web_services_with
         HTTPSProperties httpsProperties = new HTTPSProperties(hostnameVerifier, ssl);
         DefaultClientConfig clientConfig = new DefaultClientConfig(JacksonJsonProvider.class);
         clientConfig.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, httpsProperties);
