@@ -48,7 +48,7 @@ public class UsersResourceTest {
     @Test
     public void testOverSSL() throws Exception {
         SSLConfiguration sslConfig = new SSLConfiguration.Builder()
-                .withKeyStoreFile(new File("src/test/resources/keystore.jks"))
+                .withKeyStoreFile(new File(getClass().getResource("/keystore.jks").getFile()))
                 .withKeyStorePassword("changeit")
                 .withSslPort(0)
                 .withSslOnly(true)
