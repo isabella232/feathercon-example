@@ -15,10 +15,12 @@ import org.junit.Test;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -56,13 +58,24 @@ public class UsersResourceTest {
         server = new JerseyServerBuilder("com.xoom.oss.fs.resources", "/api/*")
                 .withSslConfiguration(sslConfig)
                 .build();
-        System.setProperty("javax.net.debug", "ssl");
+        // uncomment for full network SSL debug - quite interesting
+        // System.setProperty("javax.net.debug", "ssl");
         server.start();
 
         HostnameVerifier hostnameVerifier = new HostnameVerifier() {
             @Override
             public boolean verify(String hostName, SSLSession sslSession) {
-                System.out.printf("Verify hostname: %hostName\n", hostName);
+                try {
+                    Certificate[] peerCertificates = sslSession.getPeerCertificates();
+                    X509Certificate certificate = (X509Certificate) peerCertificates[0];
+                    String distinguishedName = certificate.getSubjectX500Principal().getName();
+                    String commonName = distinguishedName.split(",")[0].split("=")[1];
+                    if (!hostName.equals(commonName)) {
+                        System.out.printf("sought hostname is %s, but found %s in cert CN\n", hostName, commonName);
+                    }
+                } catch (SSLPeerUnverifiedException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         };
