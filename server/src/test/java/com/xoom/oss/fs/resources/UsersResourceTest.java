@@ -1,6 +1,7 @@
 package com.xoom.oss.fs.resources;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.client.urlconnection.HTTPSProperties;
@@ -8,7 +9,9 @@ import com.xoom.oss.fc.dto.User;
 import com.xoom.oss.feathercon.FeatherCon;
 import com.xoom.oss.feathercon.JerseyServerBuilder;
 import com.xoom.oss.feathercon.SSLConfiguration;
+import com.xoom.oss.feathercon.ServletConfiguration;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,5 +99,20 @@ public class UsersResourceTest {
         WebResource resource = client.resource(String.format("https://localhost:%d/api/users/bob@example.com", server.getHttpsPort()));
         User user = resource.get(User.class);
         System.out.println(user);
+    }
+
+    @Test
+    public void testWithDefaultServlet() throws Exception {
+        ServletConfiguration servletConfiguration = new ServletConfiguration.Builder().withServletClass(DefaultServlet.class)
+                .withInitParameter("resourceBase", new File(new File(getClass().getResource("/anchor").getFile()).getParentFile(), "docbase").getAbsolutePath())
+                .withPathSpec("/*").build();
+        server = new FeatherCon.Builder().withServletConfiguration(servletConfiguration).withPort(0).build();
+        server.start();
+
+        Client client = Client.create();
+        WebResource resource = client.resource(String.format("http://localhost:%d/hello.html", server.getHttpPort()));
+        ClientResponse clientResponse = resource.get(ClientResponse.class);
+        String entity = clientResponse.getEntity(String.class);
+        System.out.println(entity);
     }
 }
