@@ -1,7 +1,7 @@
 dependencies {
     compile project(":client")
     compile libraries.jersey_server
-    compile "com.xoom.oss:feathercon:1.4.1"
+    compile "com.xoom.oss:feathercon:${versions.feathercon}"
 
     testCompile libraries.jersey_client
     testCompile libraries.test

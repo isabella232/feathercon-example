@@ -3,6 +3,6 @@ dependencies {
     compile libraries.logging
 
     testCompile libraries.test
-    testCompile "com.xoom.oss:feathercon:1.4.1"
+    testCompile "com.xoom.oss:feathercon:${versions.feathercon}"
     testCompile 'com.google.code.gson:gson:2.2.2'
 }
