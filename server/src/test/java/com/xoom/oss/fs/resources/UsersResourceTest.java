@@ -56,6 +56,7 @@ public class UsersResourceTest {
         server = new JerseyServerBuilder("com.xoom.oss.fs.resources", "/api/*")
                 .withSslConfiguration(sslConfig)
                 .build();
+        System.setProperty("javax.net.debug", "ssl");
         server.start();
 
         HostnameVerifier hostnameVerifier = new HostnameVerifier() {
