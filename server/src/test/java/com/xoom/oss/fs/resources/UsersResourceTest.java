@@ -81,13 +81,13 @@ public class UsersResourceTest {
         };
         X509TrustManager x509TrustManager = new X509TrustManager() {
             @Override
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                System.out.println("checkClientTrusted");
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String authType) throws CertificateException {
+                System.out.printf("checkClientTrusted, authType %s\n", authType);
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                System.out.println("checkServerTrusted");
+            public void checkServerTrusted(X509Certificate[] x509Certificates, String authType) throws CertificateException {
+                System.out.printf("checkServerTrusted, authType %s\n", authType);
             }
 
             @Override
