@@ -36,8 +36,12 @@ public class ServletInstanceTest {
                         resp.getWriter().println("hello client");
                     }
                 })
-                .withPathSpec("/*").build();
-        server = new FeatherCon.Builder().withServletConfiguration(servletConfiguration).withPort(0).build();
+                .withPathSpec("/*")
+                .build();
+        server = new FeatherCon.Builder()
+                .withServletConfiguration(servletConfiguration)
+                .withPort(0)
+                .build();
         server.start();
 
         Client client = Client.create();
