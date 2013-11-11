@@ -27,10 +27,15 @@ public class StaticContentTest {
 
     @Test
     public void testWithDefaultServlet() throws Exception {
-        ServletConfiguration servletConfiguration = new ServletConfiguration.Builder().withServletClass(DefaultServlet.class)
+        ServletConfiguration servletConfiguration = new ServletConfiguration.Builder()
+                .withServletClass(DefaultServlet.class)
                 .withInitParameter("resourceBase", new File(getClass().getResource("/docbase/hello.html").getFile()).getParentFile().getAbsolutePath())
-                .withPathSpec("/*").build();
-        server = new FeatherCon.Builder().withServletConfiguration(servletConfiguration).withPort(0).build();
+                .withPathSpec("/*")
+                .build();
+        server = new FeatherCon.Builder()
+                .withServletConfiguration(servletConfiguration)
+                .withPort(0)
+                .build();
         server.start();
 
         Client client = Client.create();
